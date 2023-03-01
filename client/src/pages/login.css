@@ -1,0 +1,14 @@
+.login_bg {
+  background-image: url('../assets/login.jpg');
+  height: 92vh;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow-x: hidden;
+}
+
+@media only screen and (max-width: 767px) {
+  .login_bg {
+    display: none;
+  }
+}
