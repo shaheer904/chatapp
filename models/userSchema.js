@@ -1,22 +1,22 @@
-const mongoose = require('mongoose')
-const bcrypt = require('bcrypt')
-const { isEmail } = require('validator')
+const mongoose = require("mongoose")
+const bcrypt = require("bcrypt")
+const { isEmail } = require("validator")
 
 const userSchema = new mongoose.Schema(
   {
-    name: { type: String, required: [true, 'name is required'] },
+    name: { type: String, required: [true, "name is required"] },
     email: {
       type: String,
       lowercase: true,
       unique: true,
-      required: [true, 'email is required'],
+      required: [true, "email is required"],
       index: true,
-      validate: [isEmail, 'invalid email'],
+      validate: [isEmail, "invalid email"],
     },
     password: {
       type: String,
 
-      required: [true, 'password is required'],
+      required: [true, "password is required"],
     },
     picture: { type: String },
     newMessages: {
@@ -25,15 +25,15 @@ const userSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      default: 'online',
+      default: "online",
     },
   },
   { minimize: false }
 )
 
-userSchema.pre('save', function (next) {
+userSchema.pre("save", function (next) {
   const user = this
-  if (!user.isModified('password')) return next()
+  if (!user.isModified("password")) return next()
 
   bcrypt.genSalt(10, function (err, salt) {
     if (err) return next(err)
@@ -56,11 +56,11 @@ userSchema.methods.toJSON = function () {
 
 userSchema.statics.findByCredentials = async function (email, password) {
   const user = await User.findOne({ email })
-  if (!user) throw new Error('invalid email or password')
+  if (!user) throw new Error("invalid email or password")
 
   const isMatch = await bcrypt.compare(password, user.password)
-  if (!isMatch) throw new Error('invalid email or password')
+  if (!isMatch) throw new Error("invalid email or password")
   return user
 }
 
-module.exports = User = mongoose.model('User', userSchema)
+module.exports = User = mongoose.model("User", userSchema)
